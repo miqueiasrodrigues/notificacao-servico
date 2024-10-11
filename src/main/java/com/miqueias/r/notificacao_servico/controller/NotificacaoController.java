@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Controller
 @RequestMapping("api/notificacao")
 public class NotificacaoController {
     @Autowired
