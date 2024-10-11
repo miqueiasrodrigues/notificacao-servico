@@ -61,7 +61,6 @@ public class NotificacaoController {
         return ResponseEntity.ok(notificacoesDTO);
     }
 
-
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE

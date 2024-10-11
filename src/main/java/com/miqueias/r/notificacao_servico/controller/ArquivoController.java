@@ -48,7 +48,6 @@ public class ArquivoController {
                 .collect(Collectors.toList());
     }
 
-
     @GetMapping(
             value = "/download/{nomeDoArquivo:.+}",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -78,7 +77,6 @@ public class ArquivoController {
 
         return ResponseEntity.ok("Arquivo deletado com sucesso.");
     }
-
 
     private UploadFileResponse uploadResponseGenerate(MultipartFile file) {
         var nomeDoArquivo = service.salvarArquivo(file);

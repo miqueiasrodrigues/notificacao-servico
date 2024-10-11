@@ -24,7 +24,6 @@ public class GerenciarArquivosServiceImpl implements GerenciarArquivosService {
     public GerenciarArquivosServiceImpl(GerenciarArquivoConfig gerenciarArquivoConfig) {
         this.localSalvarArquivo = Paths.get(gerenciarArquivoConfig.getUploadDir()).
                 toAbsolutePath().normalize();
-
         try{
             Files.createDirectories(this.localSalvarArquivo);
         } catch (Exception e) {
@@ -61,7 +60,7 @@ public class GerenciarArquivosServiceImpl implements GerenciarArquivosService {
 
     @Override
     public boolean deletarArquivo(String nomeDoArquivo) {
-        Path caminhoDoArquivo = Paths.get("diretorio/dos/arquivos/" + nomeDoArquivo);
+        Path caminhoDoArquivo = this.localSalvarArquivo.resolve(nomeDoArquivo).normalize();
 
         try {
             return Files.deleteIfExists(caminhoDoArquivo);

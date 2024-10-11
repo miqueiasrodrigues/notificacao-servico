@@ -13,13 +13,13 @@ import java.util.Objects;
 public class Notificacao implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
     @Id
     private String id;
+    private Long cameraId;
     private String titulo;
     private String conteudo;
     private Integer envolvidos;
-    @NotNull(message = "A data e hora não podem ser nulas")
+
     private Date dataHora;
 
     public Notificacao() {
@@ -39,6 +39,14 @@ public class Notificacao implements Serializable {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public Long getCameraId() {
+        return cameraId;
+    }
+
+    public void setCameraId(Long cameraId) {
+        this.cameraId = cameraId;
     }
 
     public String getConteudo() {
@@ -70,11 +78,11 @@ public class Notificacao implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Notificacao that = (Notificacao) o;
-        return Objects.equals(id, that.id) && Objects.equals(titulo, that.titulo) && Objects.equals(conteudo, that.conteudo) && Objects.equals(envolvidos, that.envolvidos) && Objects.equals(dataHora, that.dataHora);
+        return Objects.equals(id, that.id) && Objects.equals(titulo, that.titulo) && Objects.equals(cameraId, that.cameraId) && Objects.equals(conteudo, that.conteudo) && Objects.equals(envolvidos, that.envolvidos) && Objects.equals(dataHora, that.dataHora);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, titulo, conteudo, envolvidos, dataHora);
+        return Objects.hash(id, titulo, cameraId, conteudo, envolvidos, dataHora);
     }
 }

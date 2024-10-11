@@ -5,6 +5,7 @@ import com.miqueias.r.notificacao_servico.domain.dto.NotificacaoCreateDTO;
 import com.miqueias.r.notificacao_servico.domain.dto.NotificacaoDTO;
 import com.miqueias.r.notificacao_servico.exception.ResourceNotFoundException;
 import com.miqueias.r.notificacao_servico.repository.NotificacaoRepository;
+import com.miqueias.r.notificacao_servico.service.GerenciarArquivosService;
 import com.miqueias.r.notificacao_servico.service.NotificacaoService;
 import com.miqueias.r.notificacao_servico.service.mapper.NotificacaoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 
     @Autowired
     private NotificacaoRepository repository;
+    @Autowired
+    private GerenciarArquivosServiceImpl gerenciarArquivosService;
     private final NotificacaoMapper mapper = NotificacaoMapper.INSTANCE;
 
     @Override
@@ -46,6 +49,7 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 
     @Override
     public NotificacaoDTO create(NotificacaoCreateDTO notificacaoCreateDTO) {
+
         Notificacao notificacaoCreated = repository.save(mapper.toNotificacao(notificacaoCreateDTO));
 
         return mapper.toNotificacaoDTO(notificacaoCreated);
