@@ -16,10 +16,12 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class WebSocketImpl extends TextWebSocketHandler implements WebSocket {
     private Set<WebSocketSession> sessions = new CopyOnWriteArraySet<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessions.add(session);
     }
+
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String receivedMessage = message.getPayload();
@@ -27,10 +29,22 @@ public class WebSocketImpl extends TextWebSocketHandler implements WebSocket {
 
         MessagemDTO messagemDTO = objectMapper.readValue(receivedMessage, MessagemDTO.class);
 
-        // Lógica para enviar messagem para email e telefone
+        broadcastMessage(messagemDTO);
     }
+
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         sessions.remove(session);
+    }
+
+    private void broadcastMessage(MessagemDTO messagemDTO) throws Exception {
+        String messageJson = objectMapper.writeValueAsString(messagemDTO);
+        TextMessage message = new TextMessage(messageJson);
+
+        for (WebSocketSession session : sessions) {
+            if (session.isOpen()) {
+                session.sendMessage(message);
+            }
+        }
     }
 }

@@ -1,12 +1,16 @@
 package com.miqueias.r.notificacao_servico.controller;
 
 
+import com.miqueias.r.notificacao_servico.domain.Arquivo;
+import com.miqueias.r.notificacao_servico.domain.dto.ArquivoDTO;
+import com.miqueias.r.notificacao_servico.domain.dto.NotificacaoDTO;
 import com.miqueias.r.notificacao_servico.service.impl.GerenciarArquivosServiceImpl;
-import com.miqueias.r.notificacao_servico.utils.UploadFileResponse;
+import com.miqueias.r.notificacao_servico.service.impl.NotificacaoServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,46 +18,56 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/arquivo")
 public class ArquivoController {
 
     @Autowired
-    private GerenciarArquivosServiceImpl service;
+    private GerenciarArquivosServiceImpl gerenciarArquivosService;
+
+    @Autowired
+    private NotificacaoServiceImpl notificacaoService;
 
     @PostMapping(
             value = "/upload",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public UploadFileResponse uploadFile(@RequestParam("arquivo") MultipartFile arquivo) {
+    public ResponseEntity<ArquivoDTO> uploadFile(@RequestParam("arquivo") MultipartFile arquivo,
+                                                 @RequestParam("notificacaoId") String notificacaoId) {
 
-        return uploadResponseGenerate(arquivo);
+        var arquivoDocumentoCreated = gerenciarArquivosService.salvarArquivo(arquivo, notificacaoId);
+
+
+        var arquivoDTO =  new ArquivoDTO(
+                arquivoDocumentoCreated.getId(),
+                notificacaoService.findById(arquivoDocumentoCreated.getNotificacaoId()),
+                arquivoDocumentoCreated.getNomeDoArquivo(),
+                arquivoDocumentoCreated.getUriDeDownload(),
+                arquivoDocumentoCreated.getUriDeDeletar(),
+                arquivoDocumentoCreated.getTipoDeArquivo(),
+                arquivoDocumentoCreated.getTamanho()
+                );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(arquivoDTO);
     }
 
-    @PostMapping(
-            value = "/upload/multiplos",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public List<UploadFileResponse> uploadMultipleFile(@RequestParam("arquivos") MultipartFile[] arquivos) {
-
-        return Arrays.asList(arquivos)
-                .stream()
-                .map(arquivo -> uploadResponseGenerate(arquivo))
-                .collect(Collectors.toList());
+    @DeleteMapping(value = "/delete/{nomeDoArquivo:.+}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteFile(@PathVariable String nomeDoArquivo) {
+       gerenciarArquivosService.deletarArquivo(nomeDoArquivo);
+        return ResponseEntity.noContent().build();
     }
+
+
 
     @GetMapping(
             value = "/download/{nomeDoArquivo:.+}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Resource> downloadFile(@PathVariable("nomeDoArquivo") String nomeDoArquivo, HttpServletRequest request) {
-        Resource resource = service.carregarArquivo(nomeDoArquivo);
+        Resource resource = gerenciarArquivosService.carregarArquivo(nomeDoArquivo);
         String contentType = "";
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
@@ -69,22 +83,6 @@ public class ArquivoController {
                 .body(resource);
     }
 
-    @DeleteMapping(value = "/delete/{nomeDoArquivo:.+}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteFile(@PathVariable String nomeDoArquivo) {
 
-        boolean isDeleted = service.deletarArquivo(nomeDoArquivo);
-
-        return ResponseEntity.ok("Arquivo deletado com sucesso.");
-    }
-
-    private UploadFileResponse uploadResponseGenerate(MultipartFile file) {
-        var nomeDoArquivo = service.salvarArquivo(file);
-        String uriDeDownload = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path("/api/arquivo/download/" + nomeDoArquivo)
-                .toUriString();
-        return new UploadFileResponse(nomeDoArquivo, uriDeDownload, file.getContentType(), file.getSize());
-    }
 
 }
