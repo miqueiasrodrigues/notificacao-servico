@@ -69,6 +69,7 @@ public class ArquivoController {
     public ResponseEntity<Resource> downloadFile(@PathVariable("nomeDoArquivo") String nomeDoArquivo, HttpServletRequest request) {
         Resource resource = gerenciarArquivosService.carregarArquivo(nomeDoArquivo);
         String contentType = "";
+
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException e) {

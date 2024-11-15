@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "camera-service", url = "${camera.service.url}")
+@FeignClient(name = "camera-servico", url = "${camera.service.url}")
 public interface CameraClient {
     @GetMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
