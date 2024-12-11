@@ -26,7 +26,7 @@ public class NotificacaoController {
     @GetMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<NotificacaoDTO> findById(@PathVariable(value = "id") String id){
+    public ResponseEntity<NotificacaoDTO> findById(@PathVariable(value = "id") Long id){
         NotificacaoDTO notificacaoDTO = service.findById(id);
         return ResponseEntity.ok(notificacaoDTO);
     }
@@ -71,7 +71,7 @@ public class NotificacaoController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable(value = "id") String id){
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id){
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

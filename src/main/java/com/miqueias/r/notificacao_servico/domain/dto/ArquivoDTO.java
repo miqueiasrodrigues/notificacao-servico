@@ -1,7 +1,7 @@
 package com.miqueias.r.notificacao_servico.domain.dto;
 
 public record ArquivoDTO(
-        String id,
+        Long id,
         NotificacaoDTO notificacaoDTO,
         String nomeDoArquivo,
         String uriDeDownload,

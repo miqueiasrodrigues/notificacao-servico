@@ -6,8 +6,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface GerenciarArquivosService {
-    ArquivoDTO findById(String id);
-    Arquivo salvarArquivo(MultipartFile arquivo, String notificacaoId);
+    ArquivoDTO findById(Long id);
+    Arquivo salvarArquivo(MultipartFile arquivo, Long notificacaoId);
     Resource carregarArquivo(String nomeDoArquivo);
     void deletarArquivo(String nomeDoArquivo);
 }

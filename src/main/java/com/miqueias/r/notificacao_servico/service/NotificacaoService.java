@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public interface NotificacaoService {
     Page<NotificacaoDTO> findAll(Pageable pageable);
     Page<NotificacaoDTO> findAll(String titulo, Pageable pageable);
-    NotificacaoDTO findById(String id);
+    NotificacaoDTO findById(Long id);
     NotificacaoDTO create(NotificacaoCreateDTO notificacaoCreateDTO);
-    void delete(String id);
+    void delete(Long id);
 }

@@ -1,35 +1,37 @@
 package com.miqueias.r.notificacao_servico.domain;
 
-import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-@Document(collection = "notificacaoes")
+@Entity
+@Table(name = "notificacoes")
 public class Notificacao implements Serializable {
+
     @Serial
     private static final long serialVersionUID = 1L;
+
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Long cameraId;
     private String titulo;
     private String conteudo;
     private Integer envolvidos;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dataHora;
 
     public Notificacao() {
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

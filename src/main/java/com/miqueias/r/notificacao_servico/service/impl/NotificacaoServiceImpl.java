@@ -46,7 +46,7 @@ public class NotificacaoServiceImpl implements NotificacaoService {
     }
 
     @Override
-    public NotificacaoDTO findById(String id) {
+    public NotificacaoDTO findById(Long id) {
         Notificacao notificacao = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Notificação não encontrada!")
         );
@@ -68,7 +68,7 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
         Notificacao notificacao = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Notificação não encontrada!")
         );

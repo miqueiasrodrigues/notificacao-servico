@@ -9,18 +9,18 @@ public class NotificacaoDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-    private String id;
+    private Long id;
     private Long cameraId;
     private String titulo;
     private String conteudo;
     private Integer envolvidos;
     private Date dataHora;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

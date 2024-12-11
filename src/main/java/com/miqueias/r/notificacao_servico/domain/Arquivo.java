@@ -1,19 +1,21 @@
 package com.miqueias.r.notificacao_servico.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Document(collection = "arquivos")
-public class Arquivo  implements Serializable {
+@Entity
+@Table(name = "arquivos")
+public class Arquivo implements Serializable {
+
     @Serial
     private static final long serialVersionUID = 1L;
+
     @Id
-    private String id;
-    private String notificacaoId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long notificacaoId;
     private String nomeDoArquivo;
     private String uriDeDownload;
     private String uriDeDeletar;
@@ -23,19 +25,19 @@ public class Arquivo  implements Serializable {
     public Arquivo() {
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getNotificacaoId() {
+    public Long getNotificacaoId() {
         return notificacaoId;
     }
 
-    public void setNotificacaoId(String notificacaoId) {
+    public void setNotificacaoId(Long notificacaoId) {
         this.notificacaoId = notificacaoId;
     }
 
@@ -92,4 +94,3 @@ public class Arquivo  implements Serializable {
         return Objects.hash(id, notificacaoId, nomeDoArquivo, uriDeDownload, uriDeDeletar, tipoDeArquivo, tamanho);
     }
 }
-

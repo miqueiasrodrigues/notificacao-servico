@@ -35,7 +35,7 @@ public class ArquivoController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ArquivoDTO> uploadFile(@RequestParam("arquivo") MultipartFile arquivo,
-                                                 @RequestParam("notificacaoId") String notificacaoId) {
+                                                 @RequestParam("notificacaoId") Long notificacaoId) {
 
         var arquivoDocumentoCreated = gerenciarArquivosService.salvarArquivo(arquivo, notificacaoId);
 
