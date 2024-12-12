@@ -8,7 +8,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 @SpringBootApplication
 @EnableFeignClients
 public class NotificacaoServicoApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(NotificacaoServicoApplication.class, args);
 	}
